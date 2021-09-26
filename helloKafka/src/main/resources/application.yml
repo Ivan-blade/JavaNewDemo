@@ -1,0 +1,26 @@
+spring:
+  kafka:    # super kafka servers
+    bootstrap-servers: 192.168.8.101:9092,192.168.8.102:9092,192.168.8.103:9092
+    zookeeper-connect: 192.168.8.101:2182,192.168.8.102:2182,192.168.8.103:2182
+    producer:
+      acks: 1
+      retries: 1
+      batch.size: 16384
+      buffer-memory: 104857600
+      max-request-size: 104857600
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    consumer:
+      # 配置是否进行消费
+      autoStartup: true
+      concurrency: 3
+      # 一个消息只能被一个groupId消费一次，如果多个业务需要消费同一个消息，可以使用不同的groupId
+      groupId: ivan
+      # 配置监听topic
+      topics: test
+      autoOffsetReset: latest
+      enableAutoCommit: false
+      maxPollRecords: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      allow.auto.create.topics: false
