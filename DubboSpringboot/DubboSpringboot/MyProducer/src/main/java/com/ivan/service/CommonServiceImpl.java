@@ -1,6 +1,7 @@
 package com.ivan.service;
 
-import com.alibaba.dubbo.config.annotation.Service;
+
+import org.apache.dubbo.config.annotation.Service;
 
 /**
  * @author hylu.ivan
