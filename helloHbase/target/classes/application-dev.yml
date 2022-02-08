@@ -1,0 +1,14 @@
+hbase:
+  config:
+    hbase:
+      client:
+        operation:
+          timeout: 3000
+        retries:
+          number: 3
+      rpc:
+        timeout: 2000
+      zookeeper:
+        property:
+          clientPort: 2181
+        quorum: linux121,linux122,linux123
