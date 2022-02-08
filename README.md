@@ -13,3 +13,8 @@
   + 集成dubbo的springboot示例，项目中配置了过滤器，不用直接在pom中删除依赖即可
 
   + <a href="./DubboSprinboot">点击跳转项目DubboSprinboot</a>
+
+#### hbase
+
++ 简介
+  + springboot集成hbase增删查改基础操作，jdk1.8,hbase1.3.x
