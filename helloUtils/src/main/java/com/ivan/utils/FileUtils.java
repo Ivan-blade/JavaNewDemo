@@ -3,8 +3,12 @@ package com.ivan.utils;
 import com.ivan.model.User;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hylu.ivan
@@ -56,7 +60,12 @@ public class FileUtils {
         }
     }
 
-    public static void writeFilesByObject(String path,List<User> list) {
+    /**
+     * 将对象写入文件
+     * @param path
+     * @param list
+     */
+    public static void writeFilesByObject(String path,List<Object> list) {
         ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(new FileOutputStream(path));
@@ -75,12 +84,18 @@ public class FileUtils {
         }
     }
 
-    public static List<User> readFilesByObject(String path) {
+
+    /**
+     * 从文件中读取对象
+     * @param path
+     * @return 可以转换为List<T></>的Object对象
+     */
+    public static Object readFilesByObject(String path) {
         ObjectInputStream ois = null;
         try {
             ois = new ObjectInputStream(new FileInputStream(path));
             Object obj= ois.readObject();
-            return (List<User>)(obj);
+            return obj;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -97,6 +112,45 @@ public class FileUtils {
         return null;
     }
 
+    /**
+     * 根据map获取对象
+     * @param map
+     * @param clazzpath 全限定类名
+     * @return
+     */
+    public static Object getObjectFromMap(Map<String,Object> map,String clazzpath) {
+        try {
+            Class c = Class.forName(clazzpath);
+            Constructor constructor = c.getConstructor();
+
+            Object object = constructor.newInstance();
+            Field[] declaredFields = c.getDeclaredFields();
+
+            // 遍历类中定义的所有变量
+            for (Field declaredField : declaredFields) {
+                // 获取变量名
+                String name = declaredField.getName();
+                // 如果map中存在则进行赋值
+                if (map.containsKey(name)) {
+                    // 取消访问检查，否则私有变量无法赋值
+                    declaredField.setAccessible(true);
+                    declaredField.set(object,map.get(name));
+                }
+            }
+
+            return object;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static void main(String[] args) {
 
@@ -107,7 +161,7 @@ public class FileUtils {
 //        }
 
 //        写文件
-        List<User> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
         User user = new User("luna","123456","110");
         User user1 = new User("saber","234567","119");
         list.add(user);
@@ -115,9 +169,20 @@ public class FileUtils {
         writeFilesByObject("data/objectSream/data.txt",list);
 
 //        读文件
-        List<User> res = readFilesByObject("data/objectSream/data.txt");
-        for (User re : res) {
-            System.out.println(re);
-        }
+//        Object object = readFilesByObject("data/objectSream/data.txt");
+//        List<User> res = (List<User>)(object);
+//        for (User re : res) {
+//            System.out.println(re);
+//        }
+
+//        从map中获取对象
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("username","luna");
+//        map.put("password","123456");
+//        map.put("phonenum","110");
+//
+//        Object object = getObjectFromMap(map, "com.ivan.model.User");
+//        System.out.println((User)object);
+
     }
 }
