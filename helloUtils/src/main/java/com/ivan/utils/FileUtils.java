@@ -109,6 +109,40 @@ public class FileUtils {
     }
 
 
+    /**
+     * 快速将一个指定位置文件拷贝成另一个文件
+     * @param originPath
+     * @param targetPath
+     */
+    public static void quickCopy(String originPath,String targetPath) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            inputStream = new FileInputStream(originPath);
+            outputStream = new FileOutputStream(targetPath);
+            inputStream.transferTo(outputStream);
+            // 快速实现文件拷贝，底层使用的是带有缓冲区的read和write
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(null != inputStream) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(null != outputStream) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
 //        按行读文件
