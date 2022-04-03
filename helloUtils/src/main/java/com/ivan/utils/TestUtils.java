@@ -1,7 +1,6 @@
 package com.ivan.utils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -11,21 +10,47 @@ import java.util.Scanner;
  */
 public class TestUtils {
 
+    /**
+     * 滑窗，dfs，bfs，二分，普通的递归
+     * @param args
+     */
     public static void main(String[] args) {
 
+
         Scanner sc = new Scanner(System.in);
-        Map<Character,Integer> map = new HashMap<>();
 
         String str = sc.nextLine();
+        String[] strs = str.split(" ");
+        Integer sum = Integer.parseInt(strs[0]);
+        Integer num = Integer.parseInt(strs[1]);
 
-        for(int i = 0;i < str.length();i++) {
-            Character c = Character.toLowerCase(str.charAt(i));
-            int num = map.getOrDefault(c,0);
-            map.put(c,num+1);
+//        Collections.reverse();
+
+        int[][] dp = new int[sum][num];
+
+        for(int i = 0;i < num;i++) {
+            dp[0][i] = 1;
         }
 
-        String target = sc.next();
-        Character res = Character.toLowerCase(target.charAt(0));
-        System.out.println(map.getOrDefault(res,0));
+        for(int i = 0;i < sum;i++) {
+            dp[i][0] = 1;
+        }
+
+        for(int i = 1; i < sum;i++){
+            for(int j = 1; j < num; j++) {
+                if(i < j) {
+                    dp[i][j] = dp[i][i];
+                } else {
+                    dp[i][j] = dp[i-j][j] + dp[i][j-1];
+                }
+            }
+        }
+
+//        System.out.println(dp[sum][num]);
+        for (int i = 0; i < dp.length; i++) {
+            int[] ints = dp[i];
+            System.out.println(Arrays.toString(ints));
+        }
+//        System.out.println(dp[sum][num]);
     }
 }
