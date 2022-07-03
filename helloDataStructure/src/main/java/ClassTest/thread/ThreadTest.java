@@ -6,4 +6,5 @@ package ClassTest.thread;
  * @description
  */
 public class ThreadTest {
+
 }
