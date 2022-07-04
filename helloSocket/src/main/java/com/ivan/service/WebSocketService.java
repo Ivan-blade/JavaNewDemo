@@ -10,7 +10,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
- 
+
 @ServerEndpoint(value = "/websocket/{userId}")
 @Component
 public class WebSocketService {
@@ -99,7 +99,6 @@ public class WebSocketService {
     public static void sendMessage(String userId,String message){
         try {
             WebSocketClient webSocketClient = webSocketMap.get(userId);
-            System.out.println(webSocketClient);
             if(webSocketClient!=null){
                 webSocketClient.getSession().getBasicRemote().sendText(message);
             }
