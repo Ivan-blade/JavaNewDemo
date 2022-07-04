@@ -79,15 +79,13 @@ public class BaseConversion {
 
         String s = String.valueOf(aa);
         String s1 = convertToBinary(s);
-        String s2 = convertToHex(s);
-        String s3 = convertToOctal(s);
+        String s2 = convertToOctal(s);
+        String s3 = convertToHex(s);
         System.out.println(StringUtils.combineParams("\t","","",s1,s2,s3));
     }
 
     public static void main(String[] args) {
 
-
-        double numPoint = getNumPoint02(3.6);
-        System.out.println(numPoint);
+        testBaseConvert();
     }
 }
